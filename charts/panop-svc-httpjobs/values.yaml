@@ -21,8 +21,6 @@ resources:
 
 loglevel: info
 
-cpuAverageUtilization: 10
-
 ## if you want node selector
 nodeSelector:  
 #   nodeType: standard 
@@ -30,6 +28,7 @@ nodeSelector:
 scanner:
   id: <scanner id>
   token: <tower token>
+  namespace: default
   ratelimit: 20  
   appversion: latest
   registry: exo.container-registry.com/panop/panop-svc-scanner

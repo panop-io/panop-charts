@@ -91,25 +91,23 @@ This will remove all associated Kubernetes resources.
 | Name                    | Description                                | Default                  |
 |-------------------------|--------------------------------------------|--------------------------|
 | `replicas`              | Number of replicas to deploy               | `1`                      |
-| `autoscale.initial`     | Initial number of replicas in autoscaling  | `1`                      |
-| `autoscale.max`         | Maximum number of replicas for autoscaling | `1`                      |
 | `concurrency`           | Max concurrent HTTP jobs per pod           | `5`                      |
-| `cpuAverageUtilization` | Target CPU utilization for scaling         | `10`                     |
 | `nodeSelector`          | Node selector for scheduling               | `{ nodeType: standard }` |
 
 ### Scanner Configuration
 
-| Name                           | Description                              | Default                                              |
-|--------------------------------|------------------------------------------|------------------------------------------------------|
-| `scanner.id`                   | Scanner id                               | from tower UI                                        |
-| `scanner.token`                | Scanner token to communicate with tower  | generated from tower UI                              |
-| `scanner.ratelimit`            | API rate limit for scanner               | `20`                                                 |
-| `scanner.appversion`           | App version to scan with                 | `latest`                                             |
-| `scanner.registry`             | Container registry for the scanner       | `exo.container-registry.com/panop/panop-svc-scanner` |
-| `scanner.image`                | Scanner image name                       | `panop-scanner-offensive`                            |
-| `scanner.loglevel`             | Log level for scanner logs               | `debug`                                              |
-| `scanner.limit_memory`         | Memory limit for scanner containers      | `1800Mi`                                             |
-| `scanner.pullsecret`           | Kubernetes pull secret for scanner image | `panop-exocr`                                        |
+| Name                   | Description                              | Default                                              |
+|------------------------|------------------------------------------|------------------------------------------------------|
+| `scanner.id`           | Scanner id                               | no default                                           |
+| `scanner.token`        | Scanner token to communicate with tower  | no default                                           |
+| `scanner.namespace`    | Namespace where jobs are run             | default                                              |
+| `scanner.ratelimit`    | API rate limit for scanner               | `20`                                                 |
+| `scanner.appversion`   | App version to scan with                 | `latest`                                             |
+| `scanner.registry`     | Container registry for the scanner       | `exo.container-registry.com/panop/panop-svc-scanner` |
+| `scanner.image`        | Scanner image name                       | `panop-scanner-offensive`                            |
+| `scanner.loglevel`     | Log level for scanner logs               | `debug`                                              |
+| `scanner.limit_memory` | Memory limit for scanner containers      | `1800Mi`                                             |
+| `scanner.pullsecret`   | Kubernetes pull secret for scanner image | `panop-exocr`                                        |
 
 ### Resource Requests & Limits
 
@@ -152,13 +150,13 @@ resources:
 
 loglevel: info
 
-cpuAverageUtilization: 10
 nodeSelector:
   nodeType: standard
 
 scanner:
   id: foo
   token: bar
+  namespace: default
   ratelimit: 20
   appversion: latest
   registry: exo.container-registry.com/panop/panop-svc-scanner

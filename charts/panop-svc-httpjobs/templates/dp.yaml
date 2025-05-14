@@ -42,6 +42,8 @@ spec:
               value: "{{ .Values.concurrency }}"
             - name: PANOP_SCANNER_APPVERSION
               value: {{ .Values.scanner.appversion }}
+            - name: PANOP_SCANNER_NAMESPACE
+              value: {{ .Values.scanner.namespace }}
             - name: PANOP_SCANNER_REGISTRY
               value: {{ .Values.scanner.registry }}
             - name: PANOP_SCANNER_IMAGE
@@ -61,8 +63,6 @@ spec:
                   key: panop-global-scanner-id
             - name: PANOP_SCANNER_RATELIMIT
               value: "{{ .Values.scanner.ratelimit | default 20 }}"
-            - name: PANOP_SCANNER_TEMPLATE_CONCURRENCY
-              value: "{{ .Values.scanner.template_concurrency | default 25 }}"
             - name: PANOP_SCANNER_LIMIT_MEMORY
               value: "{{ .Values.scanner.limit_memory | default "1000Mi" }}"
             - name: PANOP_SCANNER_PULLSECRET

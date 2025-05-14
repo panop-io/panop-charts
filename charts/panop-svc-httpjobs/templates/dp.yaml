@@ -76,9 +76,11 @@ spec:
                   name: {{ .Values.secret }}
                   {{- end }}
                   key: panop-managed-scanner-token
+           {{- if .Values.kubernetes }}
             - name: PANOP_KUBERNETES_NODETYPE
-              value: {{ .Values.engine }}
-{{- if .Values.nodeSelector }}
+              value: {{ .Values.kubernetes.nodeType | default "" }}
+           {{- end }}
+      {{- if .Values.kubernetes }}
       nodeSelector:
-{{- toYaml .Values.nodeSelector | nindent 8 }}
+      {{- toYaml .Values.kubernetes | nindent 8 }}
       {{- end }}

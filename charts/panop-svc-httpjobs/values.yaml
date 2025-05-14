@@ -22,7 +22,7 @@ resources:
 loglevel: info
 
 ## if you want node selector
-nodeSelector:  
+kubernetes:  
 #   nodeType: standard 
   
 scanner:

@@ -7,7 +7,9 @@ image:
 
 replicas: 1
 
-concurrency: 5
+concurrency: 5 ## number jobs launch concurrently
+
+secret: "-"   # create or use existing secret
 
 resources:
   limits:
@@ -19,16 +21,15 @@ resources:
 
 loglevel: info
 
-aws:
-  region: eu-central-1
-
 cpuAverageUtilization: 10
+
+## if you want node selector
 nodeSelector:  
 #   nodeType: standard 
   
 scanner:
-  id: 999
-  token: abcd
+  id: <scanner id>
+  token: <tower token>
   ratelimit: 20  
   appversion: latest
   registry: exo.container-registry.com/panop/panop-svc-scanner

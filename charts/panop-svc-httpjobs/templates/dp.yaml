@@ -15,10 +15,8 @@ spec:
   template:
     metadata:
       labels: {{ include "panop.labels" . | nindent 8 }}
-      annotations:
-        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
     spec:
-      serviceAccountName: nuclei-job-sa
+      serviceAccountName: {{ include "panop.fullname" . }}-job-sa
       imagePullSecrets:
         - name: panop-exocr
         - name: panop-ghcr
@@ -33,7 +31,6 @@ spec:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}
               memory: {{ .Values.resources.requests.memory }}
-
           env:
             - name: PANOP_ENGINE
               value: {{ .Values.engine }}
@@ -56,7 +53,11 @@ spec:
             - name: PANOP_SCANNER_ID
               valueFrom:
                 secretKeyRef:
+                  {{- if eq .Values.secret "-" }}
                   name: {{ include "panop.fullname" . }}
+                  {{- else }}
+                  name: {{ .Values.secret }}
+                  {{- end }}
                   key: panop-global-scanner-id
             - name: PANOP_SCANNER_RATELIMIT
               value: "{{ .Values.scanner.ratelimit | default 20 }}"
@@ -69,7 +70,11 @@ spec:
             - name: PANOP_SCANNER_TOKEN
               valueFrom:
                 secretKeyRef:
+                  {{- if eq .Values.secret "-" }}
                   name: {{ include "panop.fullname" . }}
+                  {{- else }}
+                  name: {{ .Values.secret }}
+                  {{- end }}
                   key: panop-managed-scanner-token
             - name: PANOP_KUBERNETES_NODETYPE
               value: {{ .Values.engine }}

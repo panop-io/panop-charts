@@ -101,20 +101,15 @@ This will remove all associated Kubernetes resources.
 
 | Name                           | Description                              | Default                                              |
 |--------------------------------|------------------------------------------|------------------------------------------------------|
+| `scanner.id`                   | Scanner id                               | from tower UI                                        |
+| `scanner.token`                | Scanner token to communicate with tower  | generated from tower UI                              |
 | `scanner.ratelimit`            | API rate limit for scanner               | `20`                                                 |
-| `scanner.template_concurrency` | Template concurrency for scans           | `5`                                                  |
 | `scanner.appversion`           | App version to scan with                 | `latest`                                             |
 | `scanner.registry`             | Container registry for the scanner       | `exo.container-registry.com/panop/panop-svc-scanner` |
 | `scanner.image`                | Scanner image name                       | `panop-scanner-offensive`                            |
 | `scanner.loglevel`             | Log level for scanner logs               | `debug`                                              |
 | `scanner.limit_memory`         | Memory limit for scanner containers      | `1800Mi`                                             |
 | `scanner.pullsecret`           | Kubernetes pull secret for scanner image | `panop-exocr`                                        |
-
-### AWS Settings
-
-| Name         | Description                          | Default        |
-|--------------|--------------------------------------|----------------|
-| `aws.region` | AWS region for resource interactions | `eu-central-1` |
 
 ### Resource Requests & Limits
 
@@ -124,12 +119,6 @@ This will remove all associated Kubernetes resources.
 | `resources.requests.memory` | Memory request | `300Mi` |
 | `resources.limits.cpu`      | CPU limit      | `500m`  |
 | `resources.limits.memory`   | Memory limit   | `400Mi` |
-
-### Secrets
-
-| Name          | Description                                | Default                                       |
-|---------------|--------------------------------------------|-----------------------------------------------|
-| `secret_path` | Path to secret configuration (e.g., Vault) | `secret/data/ducksify-dev/panop-dev/services` |
 
 ### Logging
 
@@ -150,9 +139,6 @@ image:
   pullPolicy: IfNotPresent
 
 replicas: 1
-autoscale:
-  initial: 1
-  max: 1
 
 concurrency: 5
 
@@ -164,29 +150,23 @@ resources:
     cpu: 200m
     memory: 300Mi
 
-secret_path: secret/data/ducksify-dev/panop-dev/services
-
-loglevel: debug
-
-aws:
-  region: eu-central-1
+loglevel: info
 
 cpuAverageUtilization: 10
 nodeSelector:
   nodeType: standard
 
 scanner:
+  id: foo
+  token: bar
   ratelimit: 20
-  template_concurrency: 5
   appversion: latest
   registry: exo.container-registry.com/panop/panop-svc-scanner
   image: panop-scanner-offensive
-  loglevel: debug
+  loglevel: info
   limit_memory: 1800Mi
   pullsecret: panop-exocr
 
-kubernetes:
-  nodetype: autoscale
 ```
 
 ---

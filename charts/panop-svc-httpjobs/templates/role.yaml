@@ -1,7 +1,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: nuclei-job-role
+  name: {{ include "panop.fullname" . }}-job-role
 rules:
   - apiGroups: ["batch"]
     resources: ["jobs"]

@@ -8,20 +8,20 @@ spec:
     rollingUpdate:
       maxSurge: 0
       maxUnavailable: 1
-  replicas:  {{ .Values.replicas }}
+  replicas: {{ .Values.replicas }}
   selector:
     matchLabels: {{ include "panop.selectorLabels" . | nindent 6 }}
-  
+
   template:
     metadata:
       labels: {{ include "panop.labels" . | nindent 8 }}
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
-    spec:              
+    spec:
       serviceAccountName: nuclei-job-sa
       imagePullSecrets:
         - name: panop-exocr
-        - name: panop-ghcr          
+        - name: panop-ghcr
       containers:
         - name: {{ include "panop.fullname" . }}
           image: {{.Values.image.repository}}-{{ .Chart.Name }}:{{ .Chart.AppVersion }}
@@ -44,15 +44,15 @@ spec:
             - name: CONF_INPUT.CONCURRENCY
               value: "{{ .Values.concurrency }}"
             - name: PANOP_SCANNER_APPVERSION
-              value: {{ .Values.scanner.appversion }}  
+              value: {{ .Values.scanner.appversion }}
             - name: PANOP_SCANNER_REGISTRY
-              value: {{ .Values.scanner.registry }}  
+              value: {{ .Values.scanner.registry }}
             - name: PANOP_SCANNER_IMAGE
-              value: {{ .Values.scanner.image }}  
+              value: {{ .Values.scanner.image }}
             - name: PANOP_SCANNER_LOGLEVEL
-              value: {{ .Values.scanner.loglevel }}  
+              value: {{ .Values.scanner.loglevel }}
             - name: PANOP_SCANNER_TYPE
-              value: ""  
+              value: ""
             - name: PANOP_SCANNER_ID
               valueFrom:
                 secretKeyRef:
@@ -72,12 +72,8 @@ spec:
                   name: {{ include "panop.fullname" . }}
                   key: panop-managed-scanner-token
             - name: PANOP_KUBERNETES_NODETYPE
-              value: {{ .Values.kubernetes.nodetype }}
-
-
-
-      {{- with .Values.nodeSelector  }}
+              value: {{ .Values.engine }}
+{{- if .Values.nodeSelector }}
       nodeSelector:
-        {{- toYaml . | nindent 8 }}
+{{- toYaml .Values.nodeSelector | nindent 8 }}
       {{- end }}
-

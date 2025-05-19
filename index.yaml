@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   svc-httpjobs:
   - apiVersion: v2
+    appVersion: v0.2.5
+    created: "2025-05-19T18:27:33.382769558Z"
+    description: A Helm chart for panop-svc-discover application
+    digest: 5498c375b4f11f684375b077b63fea810a9256b07d5859f33369bd27e25fea54
+    name: svc-httpjobs
+    type: application
+    urls:
+    - https://github.com/panop-io/panop-charts/releases/download/svc-httpjobs-0.5.6/svc-httpjobs-0.5.6.tgz
+    version: 0.5.6
+  - apiVersion: v2
     appVersion: v0.2.4
     created: "2025-05-14T15:56:27.677787301Z"
     description: A Helm chart for panop-svc-discover application
@@ -11,4 +21,4 @@ entries:
     urls:
     - https://github.com/panop-io/panop-charts/releases/download/svc-httpjobs-0.5.5/svc-httpjobs-0.5.5.tgz
     version: 0.5.5
-generated: "2025-05-14T15:56:27.67779249Z"
+generated: "2025-05-19T18:27:33.382779236Z"

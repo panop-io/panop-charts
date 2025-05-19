@@ -1,11 +1,17 @@
-domain: dev
+domain: prod
 engine: kubernetes
 
 image:
   repository: exo.container-registry.com/panop/panop
   pullPolicy: IfNotPresent
-
 replicas: 1
+
+imageCredentials:
+  - registry: exo.container-registry.com
+    username: ""
+    accessToken: ""
+        
+existingImageCredentials: "-"
 
 concurrency: 5 ## number jobs launch concurrently
 
@@ -22,9 +28,19 @@ resources:
 loglevel: info
 
 ## if you want node selector
-kubernetes:  
-#   nodeType: standard 
-  
+kubernetes:
+  tolerations:
+   - key: "dedicated"
+     operator: "Equal"
+     value: "foo"
+     effect: "NoSchedule"
+   - key: "env"
+     operator: "Equal"
+     value: "bar"
+     effect: "NoSchedule"
+  nodeType: "-" 
+
+
 scanner:
   id: <scanner id>
   token: <tower token>
@@ -35,5 +51,5 @@ scanner:
   image: panop-scanner-offensive
   loglevel: info
   limit_memory: 1800Mi
-  pullsecret: panop-exocr
+
 

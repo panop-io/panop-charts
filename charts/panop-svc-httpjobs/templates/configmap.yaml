@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: svc-httpjobs
+data:
+  tolerations.yaml: |
+      {{- toYaml .Values.kubernetes.tolerations | nindent 8 }}

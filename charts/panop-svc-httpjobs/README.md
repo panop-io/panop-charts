@@ -105,7 +105,7 @@ This will remove all associated Kubernetes resources.
 | `scanner.appversion`   | App version to scan with                 | `latest`                                             |
 | `scanner.registry`     | Container registry for the scanner       | `exo.container-registry.com/panop/panop-svc-scanner` |
 | `scanner.image`        | Scanner image name                       | `panop-scanner-offensive`                            |
-| `scanner.loglevel`     | Log level for scanner logs               | `debug`                                              |
+| `scanner.loglevel`     | Log level for scanner logs               | `info`                                               |
 | `scanner.limit_memory` | Memory limit for scanner containers      | `1800Mi`                                             |
 | `scanner.pullsecret`   | Kubernetes pull secret for scanner image | `panop-exocr`                                        |
 
@@ -122,7 +122,7 @@ This will remove all associated Kubernetes resources.
 
 | Name       | Description         | Default |
 |------------|---------------------|---------|
-| `loglevel` | Log verbosity level | `debug` |
+| `loglevel` | Log verbosity level | `info`  |
 
 ---
 
@@ -135,10 +135,19 @@ engine: kubernetes
 image:
   repository: exo.container-registry.com/panop/panop
   pullPolicy: IfNotPresent
-
 replicas: 1
 
-concurrency: 5
+## imagecredentials are used for consumer and jobs
+imageCredentials:
+  - registry: exo.container-registry.com
+    username: ""
+    accessToken: ""
+
+existingImageCredentials: "-"
+
+concurrency: 5 ## number jobs launch concurrently
+
+secret: "-"   # create or use existing secret
 
 resources:
   limits:
@@ -146,25 +155,34 @@ resources:
     memory: 400Mi
   requests:
     cpu: 200m
-    memory: 300Mi
+    memory: 200Mi
 
 loglevel: info
 
-nodeSelector:
-  nodeType: standard
+## if you want node selector
+kubernetes:
+  tolerations:
+    - key: "dedicated"
+      operator: "Equal"
+      value: "foo"
+      effect: "NoSchedule"
+    - key: "env"
+      operator: "Equal"
+      value: "bar"
+      effect: "NoSchedule"
+  nodeType: "-"
+
 
 scanner:
-  id: foo
-  token: bar
+  id: <scanner id>
+  token: <tower token>
   namespace: default
   ratelimit: 20
   appversion: latest
   registry: exo.container-registry.com/panop/panop-svc-scanner
-  image: panop-scanner-offensive
+  image: panop-scanner-standard
   loglevel: info
   limit_memory: 1800Mi
-  pullsecret: panop-exocr
-
 ```
 
 ---
@@ -172,7 +190,7 @@ scanner:
 ## License
 
 ```text
-Copyright © 2023 Ducksify
+Copyright © 2023 Panop
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

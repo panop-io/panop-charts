@@ -17,9 +17,10 @@ spec:
       labels: {{ include "panop.labels" . | nindent 8 }}
     spec:
       serviceAccountName: {{ include "panop.fullname" . }}-job-sa
+      tolerations:
+        {{- toYaml .Values.kubernetes.tolerations | nindent 8 }}
       imagePullSecrets:
-        - name: panop-exocr
-        - name: panop-ghcr
+        - name: {{ if ne .Values.existingImageCredentials "-" }}{{ .Values.existingImageCredentials }}{{ else }}{{ include "panop.fullname" . }}-cr{{ end }}
       containers:
         - name: {{ include "panop.fullname" . }}
           image: {{.Values.image.repository}}-{{ .Chart.Name }}:{{ .Chart.AppVersion }}
@@ -66,7 +67,7 @@ spec:
             - name: PANOP_SCANNER_LIMIT_MEMORY
               value: "{{ .Values.scanner.limit_memory | default "1000Mi" }}"
             - name: PANOP_SCANNER_PULLSECRET
-              value: {{ .Values.scanner.pullsecret }}
+              value: {{ if ne .Values.existingImageCredentials "-" }}{{ .Values.existingImageCredentials }}{{ else }}{{ include "panop.fullname" . }}-cr{{ end }}
             - name: PANOP_SCANNER_TOKEN
               valueFrom:
                 secretKeyRef:
@@ -76,11 +77,12 @@ spec:
                   name: {{ .Values.secret }}
                   {{- end }}
                   key: panop-managed-scanner-token
-           {{- if .Values.kubernetes }}
+           {{- if ne .Values.kubernetes.nodeType "-" }}
             - name: PANOP_KUBERNETES_NODETYPE
               value: {{ .Values.kubernetes.nodeType | default "" }}
            {{- end }}
-      {{- if .Values.kubernetes }}
+            
+      {{- if ne .Values.kubernetes.nodeType "-" }} 
       nodeSelector:
       {{- toYaml .Values.kubernetes | nindent 8 }}
       {{- end }}

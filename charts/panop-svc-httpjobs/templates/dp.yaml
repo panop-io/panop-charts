@@ -17,8 +17,10 @@ spec:
       labels: {{ include "panop.labels" . | nindent 8 }}
     spec:
       serviceAccountName: {{ include "panop.fullname" . }}-job-sa
+      {{- with .Values.kubernetes.tolerations  }}
       tolerations:
-        {{- toYaml .Values.kubernetes.tolerations | nindent 8 }}
+      {{- toYaml . | nindent 8 }}
+      {{ end }}
       imagePullSecrets:
         - name: {{ if ne .Values.existingImageCredentials "-" }}{{ .Values.existingImageCredentials }}{{ else }}{{ include "panop.fullname" . }}-cr{{ end }}
       containers:
@@ -77,12 +79,12 @@ spec:
                   name: {{ .Values.secret }}
                   {{- end }}
                   key: panop-managed-scanner-token
-           {{- if ne .Values.kubernetes.nodeType "-" }}
+           {{- with .Values.kubernetes.nodeSelector }}
             - name: PANOP_KUBERNETES_NODETYPE
-              value: {{ .Values.kubernetes.nodeType | default "" }}
+              value: {{ .nodeType | default "" }}
            {{- end }}
             
-      {{- if ne .Values.kubernetes.nodeType "-" }} 
+      {{- with .Values.kubernetes.nodeSelector  }} 
       nodeSelector:
-      {{- toYaml .Values.kubernetes | nindent 8 }}
+      {{- toYaml . | nindent 8 }}
       {{- end }}

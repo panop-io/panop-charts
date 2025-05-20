@@ -129,7 +129,7 @@ This will remove all associated Kubernetes resources.
 ## Example Values
 
 ```yaml
-domain: dev
+domain: prod
 engine: kubernetes
 
 image:
@@ -137,7 +137,6 @@ image:
   pullPolicy: IfNotPresent
 replicas: 1
 
-## imagecredentials are used for consumer and jobs
 imageCredentials:
   - registry: exo.container-registry.com
     username: ""
@@ -166,11 +165,12 @@ kubernetes:
       operator: "Equal"
       value: "foo"
       effect: "NoSchedule"
-    - key: "env"
-      operator: "Equal"
-      value: "bar"
-      effect: "NoSchedule"
-  nodeType: "-"
+  #   - key: "env"
+  #     operator: "Equal"
+  #     value: "bar"
+  #     effect: "NoSchedule"
+  nodeSelector:
+#    nodeType: "standard" 
 
 
 scanner:
@@ -180,7 +180,7 @@ scanner:
   ratelimit: 20
   appversion: latest
   registry: exo.container-registry.com/panop/panop-svc-scanner
-  image: panop-scanner-standard
+  image: panop-scanner-offensive
   loglevel: info
   limit_memory: 1800Mi
 ```

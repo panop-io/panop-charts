@@ -34,11 +34,12 @@ kubernetes:
      operator: "Equal"
      value: "foo"
      effect: "NoSchedule"
-   - key: "env"
-     operator: "Equal"
-     value: "bar"
-     effect: "NoSchedule"
-  nodeType: "-" 
+#   - key: "env"
+#     operator: "Equal"
+#     value: "bar"
+#     effect: "NoSchedule"
+  nodeSelector:
+#    nodeType: "standard" 
 
 
 scanner:

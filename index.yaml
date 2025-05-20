@@ -1,3 +1,4 @@
 apiVersion: v1
 entries:
+  svc-httpjobs: {}
 generated: "2025-05-19T18:27:33.382779236Z"

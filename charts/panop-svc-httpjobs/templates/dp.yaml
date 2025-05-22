@@ -27,6 +27,9 @@ spec:
         - name: {{ include "panop.fullname" . }}
           image: {{.Values.image.repository}}-{{ .Chart.Name }}:{{ .Chart.AppVersion }}
           imagePullPolicy: {{.Values.image.pullPolicy}}
+          args:
+            - --configmap 
+            - {{ include "panop.fullname" . }}
           resources:
             limits:
               cpu: {{ .Values.resources.limits.cpu }}

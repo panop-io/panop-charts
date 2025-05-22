@@ -27,29 +27,29 @@ resources:
 
 loglevel: info
 
-## if you want node selector
 kubernetes:
   tolerations:
-   - key: "dedicated"
-     operator: "Equal"
-     value: "foo"
-     effect: "NoSchedule"
+#   - key: "dedicated"
+#     operator: "Equal"
+#     value: "foo"
+#     effect: "NoSchedule"
 #   - key: "env"
 #     operator: "Equal"
 #     value: "bar"
 #     effect: "NoSchedule"
+## if you want stick to a selected node
   nodeSelector:
 #    nodeType: "standard" 
-
 
 scanner:
   id: <scanner id>
   token: <tower token>
   namespace: default
   ratelimit: 20  
-  appversion: latest
-  registry: exo.container-registry.com/panop/panop-svc-scanner
-  image: panop-scanner-offensive
+  ## can be omitted version come from tower
+  #appversion: latest
+  #registry: exo.container-registry.com/panop/panop-svc-scanner
+  #image: panop-scanner-offensive
   loglevel: info
   limit_memory: 1800Mi
 

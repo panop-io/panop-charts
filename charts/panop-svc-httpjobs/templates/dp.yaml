@@ -44,7 +44,7 @@ spec:
               value: {{ .Values.domain }}
             - name: PANOP_LOGLEVEL
               value: {{ .Values.loglevel }}
-            - name: PANOP_CONCURRENCY
+            - name: PANOP_INPUT_CONCURRENCY
               value: "{{ .Values.concurrency }}"
             - name: PANOP_SCANNER_APPVERSION
               value: {{ .Values.scanner.appversion }}
